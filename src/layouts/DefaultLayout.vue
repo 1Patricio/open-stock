@@ -9,8 +9,16 @@
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" :width="160">
-      <v-list :items="items">
+      <v-list>
+        <v-list-item
+          v-for="menu in items"
+          :key="menu.value"
+          :title="menu.title"
+          :value="menu.value"
+          :to="{name: menu.value}"
+        >
 
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -25,15 +33,15 @@ const drawer = ref(true)
 const items = [
   {
     title: 'Dashboard',
-    value: 'dashboard'
+    value: 'home'
   },
   {
     title: 'Categorias',
-    value: 'categorias'
+    value: 'category'
   },
   {
     title: 'Produtos',
-    value: 'produtos'
+    value: 'product'
   }
 ]
 </script>

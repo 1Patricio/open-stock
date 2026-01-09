@@ -1,9 +1,8 @@
-  <template>
-
-    <v-container class="pa-4" fluid height="100dvh">
-      <slot></slot>
-    </v-container>
-  </template>
+<template>
+  <v-container fluid height="100dvh" class="pa-8">
+    <slot></slot>
+  </v-container>
+</template>
 
 <script setup>
 
