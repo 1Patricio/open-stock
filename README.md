@@ -42,3 +42,5 @@ npm run build
 ```sh
 npm run lint
 ```
+
+### API UTILIZADA PARA CONSUMIR FRONT END [Python Clean Architeture + TDD](https://api.areteacademy.com.br/docs)

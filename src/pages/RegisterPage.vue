@@ -17,7 +17,7 @@
             </div>
 
             <v-text-field
-              v-model="formData.nome"
+              v-model="formData.name"
               label="Nome"
               required
               variant="outlined"
@@ -37,14 +37,14 @@
             ></v-text-field>
 
             <v-text-field
-              v-model="formData.senha"
+              v-model="formData.password"
               :append-inner-icon="passwordIsVisible ? 'mdi-eye' : 'mdi-eye-off'"
               label="Senhas"
               required
               variant="outlined"
               :type="passwordIsVisible ? text : 'password'"
               class="mb-3"
-              :rules="[rules.required, rules.maxLength, rules.minLength]"
+              :rules="[rules.required, rules.maxLength, rules.minLength, rules.password]"
               @click:append-inner="showPassword"
             >
             </v-text-field>
@@ -75,35 +75,74 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+const urlAPI = 'https://api.areteacademy.com.br'
+const router = useRouter()
 
 const formData = ref({
-  nome: '',
+  name: '',
   email: '',
-  senha: ''
+  password: ''
 })
+
+const passwordIsVisible = ref(false)
 
 const rules = {
   required: value => !!value || 'Campo obrigatório',
+
   email: value => {
-    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    return pattern.test(value) || 'Invalid e-mail.'
+    const pattern =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return pattern.test(value) || 'E-mail inválido'
   },
-  maxLength: value => value.length <= 20 || 'Máximo de 20 caracteres',
-  minLength: value => value.length >= 8  || 'Mínimo de 8 caracteres'
+
+  minLength: value => value?.length >= 8 || 'Mínimo de 8 caracteres',
+  maxLength: value => value?.length <= 20 || 'Máximo de 20 caracteres',
+
+  password: value => {
+    if (!value) return true // deixa o required cuidar disso
+
+    if (value.length < 8)
+      return 'A senha deve ter no mínimo 8 caracteres'
+
+    if (!/[a-z]/.test(value))
+      return 'A senha deve conter ao menos 1 letra minúscula'
+
+    if (!/[A-Z]/.test(value))
+      return 'A senha deve conter ao menos 1 letra maiúscula'
+
+    if (!/\d/.test(value))
+      return 'A senha deve conter ao menos 1 número'
+
+    return true
+  }
 }
 
+
 const valid = ref(false)
+
+function showPassword() {
+  passwordIsVisible.value = !passwordIsVisible.value
+}
 
 function handleSubmit () {
   if(!valid.value) {
     alert('Formulário incompleto')
   }
 
-  alert(JSON.stringify(formData.value))
+  createUser()
 }
 
-const passwordIsVisible = ref(false)
-function showPassword() {
-  passwordIsVisible.value = !passwordIsVisible.value
+async function createUser(){
+  try {
+    await axios.post(`${urlAPI}/user`, {
+      ...formData.value
+    })
+
+    router.push({name: 'login'})
+  } catch (error) {
+    console.error(error)
+  }
 }
 </script>
