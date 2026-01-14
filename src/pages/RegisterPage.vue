@@ -75,11 +75,15 @@
 </template>
 
 <script setup>
-import axios from 'axios';
 import { useRouter } from 'vue-router';
-const urlAPI = 'https://api.areteacademy.com.br'
-const router = useRouter()
+import { useNotification } from '@/composables/useNotification';
+import { useApi } from '@/composables/useApi';
 
+const api = useApi()
+const router = useRouter()
+const notification = useNotification()
+
+const urlAPI = 'https://api.areteacademy.com.br'
 const formData = ref({
   name: '',
   email: '',
@@ -101,7 +105,7 @@ const rules = {
   maxLength: value => value?.length <= 20 || 'Máximo de 20 caracteres',
 
   password: value => {
-    if (!value) return true // deixa o required cuidar disso
+    if (!value) return true
 
     if (value.length < 8)
       return 'A senha deve ter no mínimo 8 caracteres'
@@ -136,12 +140,13 @@ function handleSubmit () {
 
 async function createUser(){
   try {
-    await axios.post(`${urlAPI}/user`, {
+    await api.post(`${urlAPI}/user`, {
       ...formData.value
     })
-
+    notification.success('Usuário cadastrado com sucesso!')
     router.push({name: 'login'})
   } catch (error) {
+    notification.error('Não foi possível realizar o cadastro.', 9000)
     console.error(error)
   }
 }
