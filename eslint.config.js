@@ -17,8 +17,9 @@ export default defineConfig([
       globals: {
         ...globals.browser,
         "ref": "readonly",
+        "onMounted": "readonly",
         rules: {
-          'vue/multi-word-component-names': 3, // 0 disables the rule
+          'vue/multi-word-component-names': 3, 
         },
       },
     },

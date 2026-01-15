@@ -40,6 +40,11 @@ const router = createRouter({
         component: () => import('@/pages/CategoryPage.vue')
       },
       {
+        path: 'form-category',
+        name: 'form-category',
+        component: () => import('@/pages/CategoryFormPage.vue')
+      },
+      {
         path: 'product',
         name: 'product',
         component: () => import('@/pages/ProductPage.vue')
@@ -49,7 +54,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('v-token')
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
   if (requiresAuth && !token) {

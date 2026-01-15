@@ -83,7 +83,6 @@ const api = useApi()
 const router = useRouter()
 const notification = useNotification()
 
-const urlAPI = 'https://api.areteacademy.com.br'
 const formData = ref({
   name: '',
   email: '',
@@ -91,6 +90,7 @@ const formData = ref({
 })
 
 const passwordIsVisible = ref(false)
+const valid = ref(false)
 
 const rules = {
   required: value => !!value || 'Campo obrigatório',
@@ -123,16 +123,13 @@ const rules = {
   }
 }
 
-
-const valid = ref(false)
-
 function showPassword() {
   passwordIsVisible.value = !passwordIsVisible.value
 }
 
 function handleSubmit () {
   if(!valid.value) {
-    alert('Formulário incompleto')
+    notification.error('Formulário incompleto')
   }
 
   createUser()
@@ -140,7 +137,7 @@ function handleSubmit () {
 
 async function createUser(){
   try {
-    await api.post(`${urlAPI}/user`, {
+    await api.post('/user', {
       ...formData.value
     })
     notification.success('Usuário cadastrado com sucesso!')

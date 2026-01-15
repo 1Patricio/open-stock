@@ -2,7 +2,7 @@ import axios from "axios";
 
 export function useApi(baseUrl){
   const apiBaseUrl = baseUrl || import.meta.env.VITE_API_BASE_URL
-  const TOKEN = 'token'
+  const TOKEN = 'v-token'
 
   const apiClient = axios.create({
     baseURL: apiBaseUrl,
