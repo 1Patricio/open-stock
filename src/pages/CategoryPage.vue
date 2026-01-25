@@ -10,21 +10,29 @@
         Nova Categoria
       </v-btn>
     </div>
-    <v-data-table :headers="headers" :items="categories"></v-data-table>
+    <v-data-table :headers="headers" :items="categories">
+      <template v-slot:item.actions="{ item }">
+        <v-btn size="small" color="warning" @click="editCategory(item.id)">
+          Editar
+        </v-btn>
+      </template>
+    </v-data-table>
   </ContainerDefault>
 </template>
 
 <script setup>
 import { useApi } from '@/composables/useApi';
 import { useNotification } from '@/composables/useNotification';
-import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 const notification = useNotification()
 const api = useApi()
+const router = useRouter()
 
 const headers = [
-    { title: 'Name', value: 'name', sortable: true },
-    { title: 'Status', value: 'status', sortable: true },
+    { title: 'Name', value: 'name' },
+    { title: 'Status', value: 'status' },
+    { title: 'Ações', value: 'actions' },
   ]
 
 const categories = ref([])
@@ -33,8 +41,6 @@ async function getCategories(){
   try {
     const response = await api.get('/category')
     categories.value = response.data
-    console.log("response")
-    console.log(response)
   } catch (error) {
     console.error(error)
     notification.error('Erro ao listar categorias')
@@ -44,4 +50,8 @@ async function getCategories(){
 onMounted(() => {
   getCategories()
 })
+
+function editCategory(id){
+  router.push({name: 'form-category', params: {id: id}})
+}
 </script>

@@ -40,7 +40,7 @@ const router = createRouter({
         component: () => import('@/pages/CategoryPage.vue')
       },
       {
-        path: '/form-category',
+        path: '/form-category/:id?',
         name: 'form-category',
         component: () => import('@/pages/CategoryFormPage.vue')
       },

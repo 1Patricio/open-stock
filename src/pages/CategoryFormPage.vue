@@ -14,7 +14,6 @@
           class="mb-1"
           :rules="[rules.required]"
         ></v-text-field>
-        {{ formCategory.status }}
 
         <v-select
           v-model="formCategory.status"
@@ -38,7 +37,7 @@
             type="submit"
             :disabled="!valid"
           >
-            Cadastrar
+            {{idCategory ? 'Atualizar' : 'Cadastrar'}}
           </v-btn>
         </div>
       </v-form>
@@ -48,9 +47,14 @@
 <script setup>
 import { useApi } from '@/composables/useApi'
 import { useNotification } from '@/composables/useNotification'
+import { onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const notification = useNotification()
 const api = useApi()
+const router = useRouter()
+const route = useRoute()
+const idCategory = ref('')
 
 const valid = ref(false)
 
@@ -68,11 +72,18 @@ const rules = {
   required: value => !!value || 'Campo obrigatório'
 }
 
+onMounted(() => {
+  if (route.params?.id) {
+    idCategory.value = route.params?.id
+    getCategory(idCategory.value)
+  }
+})
+
 function handleSubmit() {
   if(!valid.value) {
     notification.error('Formulário incompleto')
   }
-  createCategory()
+  idCategory.value ? updateCategory(idCategory.value) : createCategory()
 }
 
 async function createCategory(){
@@ -80,6 +91,34 @@ async function createCategory(){
     await api.post('/category',{
       ...formCategory.value
     })
+    notification.success('Categoria cadastrada com sucesso')
+    router.push({ name: 'category' })
+  } catch (error) {
+    console.error(error)
+    notification.error('Erro ao salvar categoria')
+  }
+}
+
+async function getCategory(id) {
+  try {
+    const response = await api.get(`/category/${id}`)
+    formCategory.value = {
+      name: response.data.name,
+      status: response.data.status
+    }
+  } catch (error) {
+    console.error(error)
+    notification.error('Erro ao buscar categoria')
+  }
+}
+
+async function updateCategory(id){
+  try {
+    await api.put(`/category/${id}`,{
+      ...formCategory.value
+    })
+    notification.success('Categoria atualizada com sucesso')
+    router.push({ name: 'category' })
   } catch (error) {
     console.error(error)
     notification.error('Erro ao salvar categoria')
