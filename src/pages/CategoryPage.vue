@@ -11,6 +11,12 @@
       </v-btn>
     </div>
     <v-data-table :headers="headers" :items="categories">
+      <template v-slot:item.status="{ item }">
+        <ChipStatus
+          :status="item.status"
+        />
+      </template>
+
       <template v-slot:item.actions="{ item }">
         <v-btn size="small" color="warning" @click="editCategory(item.id)">
           Editar
@@ -21,6 +27,7 @@
 </template>
 
 <script setup>
+import ChipStatus from '@/components/ChipStatus.vue';
 import { useApi } from '@/composables/useApi';
 import { useNotification } from '@/composables/useNotification';
 import { useRouter } from 'vue-router';

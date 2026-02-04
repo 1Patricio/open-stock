@@ -56,7 +56,7 @@
             type="submit"
             :disabled="!valid"
           >
-            {{idCategory ? 'Atualizar' : 'Cadastrar'}}
+            {{idProduct ? 'Atualizar' : 'Cadastrar'}}
           </v-btn>
         </div>
       </v-form>

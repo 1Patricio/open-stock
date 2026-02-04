@@ -11,6 +11,12 @@
       </v-btn>
     </div>
     <v-data-table :headers="headers" :items="products">
+      <template v-slot:item.status="{ item }">
+        <ChipStatus
+          :status="item.status"
+        />
+      </template>
+
       <template v-slot:item.actions="{ item }">
         <v-btn size="small" color="warning" @click="editProduct(item.id)">
           Editar
