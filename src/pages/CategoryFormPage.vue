@@ -33,7 +33,7 @@
           </v-btn>
 
           <v-btn
-            color="secondary"
+            color="#1E2761"
             type="submit"
             :disabled="!valid"
           >

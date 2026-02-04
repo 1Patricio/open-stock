@@ -3,7 +3,7 @@
     <div class="d-flex justify-space-between">
       <h2>Produtos</h2>
       <v-btn
-        color="secondary"
+        color="#1E2761"
         prepend-icon="$plus"
         :to="{name: 'form-product'}"
       >

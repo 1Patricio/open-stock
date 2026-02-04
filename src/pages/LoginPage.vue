@@ -4,7 +4,7 @@
       <v-col class="d-flex align-center justify-center bg-grey-lighten-4" cols="12" md="6">
         <div class="text-center">
           <v-img src="/undraw/login-icon.svg" class="mx-auto mb-4" max-width="300"></v-img>
-          <h1 class="text-secondary mb-2">Vuecommerce</h1>
+          <h1 class="mb-2" style="color: #1E2761;">Open Stock</h1>
           <p class="text-grey-darken-1">Sua plataforma de gerenciamento de estoque</p>
         </div>
       </v-col>
@@ -12,7 +12,7 @@
         <div class="w-100" style="max-width: 400px;">
           <v-form v-model="valid" @submit.prevent="handleSubmit()">
             <div class="text-center mb-6">
-              <h1 class="text-secondary">Login</h1>
+              <h1 style="color: #1E2761;">Login</h1>
               <p class="text-grey-darken-1">Preencha seus dados para logar</p>
             </div>
 
@@ -40,7 +40,7 @@
             <v-btn
               block
               class="mb-3"
-              color="secondary"
+              color="#1E2761"
               size="large"
               type="submit"
             >
